@@ -30,7 +30,6 @@ function searchServer() {
     getServer();
     interval = setInterval(getServer, 5000);
 
-    //sendWebhook();
 }
 
 
@@ -40,6 +39,9 @@ function getServer() {
     fetch(`https://api.mcstatus.io/v2/status/java/${currentServer}`)
         .then(res => res.json())
         .then(data => {
+            
+            console.log(data);
+
             document.getElementById("ip").innerHTML = `IP-Adresse: ${data.host}`;
             document.getElementById("onlineStatus").innerHTML = `Server Status: ${data.online ? "Online" : "Offline"}`;
             document.getElementById("port").innerHTML = `Port: ${data.port}`;
@@ -50,9 +52,8 @@ function getServer() {
                 peakPlayers = data.players.online;
             }
 
-            document.getElementById("infoTextWebhook").innerHTML = `Peak (Session): ${peakPlayers}`;
+            document.getElementById("infoText").innerHTML = `Peak (Session): ${peakPlayers}`;
 
-            document.getElementById("infoText").innerHTML = "";
         })
         .catch(error => {
             document.getElementById("infoText").innerHTML = "Server could not be found!";

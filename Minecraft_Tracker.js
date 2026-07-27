@@ -1,0 +1,60 @@
+// Variablen
+let peakPlayers = 0;
+let currentServer = "";
+let interval = null;
+
+function resetStats() {
+    document.getElementById("infoText").innerHTML = "Loading..";
+    document.getElementById("ip").innerHTML = "";
+    document.getElementById("port").innerHTML = "";
+    document.getElementById("onlineStatus").innerHTML = "";
+    document.getElementById("playerCount").innerHTML = "";
+}
+
+function searchServer() {
+    resetStats();
+
+    const newServer = document.getElementById("serverInput").value;
+
+    if (!newServer) {
+        document.getElementById("infoText").innerHTML = "Server could not be found!";
+        return;
+    }
+
+    // Server wechseln reset + timer neu
+    currentServer = newServer;
+    peakPlayers = 0;
+
+    if (interval) clearInterval(interval);
+
+    getServer();
+    interval = setInterval(getServer, 5000);
+
+    //sendWebhook();
+}
+
+
+function getServer() {
+    if (!currentServer) return;
+
+    fetch(`https://api.mcstatus.io/v2/status/java/${currentServer}`)
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById("ip").innerHTML = `IP-Adresse: ${data.host}`;
+            document.getElementById("onlineStatus").innerHTML = `Server Status: ${data.online ? "Online" : "Offline"}`;
+            document.getElementById("port").innerHTML = `Port: ${data.port}`;
+            document.getElementById("playerCount").innerHTML = `Player: ${data.players.online} / ${data.players.max}`;
+
+            // Peak System
+            if (data.players.online > peakPlayers) {
+                peakPlayers = data.players.online;
+            }
+
+            document.getElementById("infoTextWebhook").innerHTML = `Peak (Session): ${peakPlayers}`;
+
+            document.getElementById("infoText").innerHTML = "";
+        })
+        .catch(error => {
+            document.getElementById("infoText").innerHTML = "Server could not be found!";
+        });
+}

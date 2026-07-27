@@ -29,7 +29,6 @@ function searchServer() {
 
     getServer();
     interval = setInterval(getServer, 5000);
-
 }
 
 
@@ -46,6 +45,8 @@ function getServer() {
             document.getElementById("onlineStatus").innerHTML = `Server Status: ${data.online ? "Online" : "Offline"}`;
             document.getElementById("port").innerHTML = `Port: ${data.port}`;
             document.getElementById("playerCount").innerHTML = `Player: ${data.players.online} / ${data.players.max}`;
+            
+            document.body.style.background = data.online ? "radial-gradient(circle at top, #22c55e, #111827)" : "radial-gradient(circle at top, #ef4444, #111827)";
 
             // Peak System
             if (data.players.online > peakPlayers) {
@@ -55,7 +56,11 @@ function getServer() {
             document.getElementById("infoText").innerHTML = `Peak (Session): ${peakPlayers}`;
 
         })
+
         .catch(error => {
             document.getElementById("infoText").innerHTML = "Server could not be found!";
+            document.body.style.background = "radial-gradient(circle at top, #ef4444, #111827)";
+            document.getElementById("port").innerHTML = `Port:`;
+
         });
 }

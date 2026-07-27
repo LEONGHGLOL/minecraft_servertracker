@@ -10,11 +10,12 @@ body{
     font-family:Arial, sans-serif;
 
     display:flex;
-    justify-content:center;
+    flex-direction:column;
+
     align-items:center;
 
-    background:
-    radial-gradient(circle at top,#4f46e5,#111827);
+    --bg: radial-gradient(circle at top,#4f46e5,#111827);
+    background: var(--bg);
 
     color:white;
 }
@@ -22,6 +23,9 @@ body{
 .InfoSection{
     width:420px;
     padding:30px;
+
+    margin-top:auto;
+    margin-bottom:auto;
 
     background:rgba(255,255,255,.05);
 
@@ -103,4 +107,26 @@ button:hover{
 
 .text{
     font-size:16px;
+}
+
+footer{
+    width:100%;
+    height:30px;
+    margin-top:auto;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:#111827;
+    gap:10px;
+}
+
+a{
+    color: rgb(10, 87, 189);
+    transition: 0.3s ease;
+}
+a:hover{
+    transform: scale(1.05);
+    color: rgb(52, 132, 238);
 }
